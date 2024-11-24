@@ -16,7 +16,11 @@ def main():
     """Main program loop."""
     print("Welcome to the Student Grader Program!")
     students = []
+    show_options(students)
 
+
+def show_options(students):
+    """Displays the menu options to the user."""
     while True:
         print("\nOptions:")
         print("1. Add a new student")
@@ -29,28 +33,41 @@ def main():
             print("Invalid choice. Please try again.")
             continue
 
-        if choice == "3":
+        if choice == "1":
+            create_student(students)
+        elif choice == "2":
+            display_students(students)
+        elif choice == "3":
             print("Exiting the program. Goodbye!")
             break
 
-        if choice == "1":
-            name = input("Enter the student's name: ")
-            try:
-                scores = input("Enter the student's scores separated by commas (e.g., 85,90,78): ")
-                scores = [float(score.strip()) for score in scores.split(",")]
-            except ValueError:
-                print("Invalid input. Make sure to enter numeric scores separated by commas.")
-                continue
 
-            average = sum(scores) / len(scores)
-            grade = calculate_grade(average)
-            students.append({"name": name, "scores": scores, "average": average, "grade": grade})
-            print(f"{name}'s data added successfully.")
+def create_student(students):
+    """Adds a new student to the list."""
+    name = input("\nEnter the student's name: ")
+    try:
+        scores = input("Enter the student's scores separated by commas (e.g., 85,90,78): ")
+        scores = [float(score.strip()) for score in scores.split(",")]
+    except ValueError:
+        print("Invalid input. Make sure to enter numeric scores separated by commas.")
+        return  # Exit the function and let the user try again.
 
-        elif choice == "2":
-            if not students:
-                print("No student data available.")
-            else:
-                print("\nStudent Grades:")
-                for student in students:
-                    print(f"Name: {student['name']}, Average: {student['average']:.2f}, Grade: {student['grade']}")
+    average = sum(scores) / len(scores)
+    grade = calculate_grade(average)
+    students.append({"name": name, "scores": scores, "average": average, "grade": grade})
+    print(f"{name}'s data added successfully.")
+
+
+def display_students(students):
+    """Displays all students' grades."""
+    if not students:
+        print("\nNo student data available.")
+    else:
+        print("\nStudent Grades:")
+        for student in students:
+            print(f"Name: {student['name']}, Average: {student['average']:.2f}, Grade: {student['grade']}")
+
+
+# Entry point of the program
+if __name__ == "__main__":
+    main()
